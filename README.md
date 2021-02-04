@@ -119,3 +119,9 @@ have unstable syntax.
 				print "Good morning!"
 				===
 		```
+
+## Parser
+This repository contains a parser library for Chearmyp which represents the source as syntax tree.
+
+## Lexer
+The lexer has been forked. Visit the repository of the lexer for more details.
