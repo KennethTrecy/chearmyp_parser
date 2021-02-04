@@ -1,9 +1,7 @@
-mod node;
 mod scope_stack;
 
-pub use node::Node;
-
 use alloc::vec::Vec;
+use crate::Node;
 use crate::lex::{Token, TokenQueue};
 use scope_stack::ScopeStack;
 
@@ -13,7 +11,7 @@ use scope_stack::ScopeStack;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::parse::{parse, Node};
+/// use chearmyp_parser::{parse, Node};
 /// let source = b"
 /// ## A sample source
 /// hello

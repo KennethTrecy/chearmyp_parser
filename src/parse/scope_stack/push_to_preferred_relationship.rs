@@ -1,4 +1,4 @@
-use crate::parse::Node;
+use crate::Node;
 use crate::parse::scope_stack::Relationship;
 use super::ScopeStack;
 

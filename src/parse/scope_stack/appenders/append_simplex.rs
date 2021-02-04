@@ -42,7 +42,7 @@ mod t {
 		});
 	}
 
-	use crate::parse::Node;
+	use crate::Node;
 
 	#[test]
 	pub fn can_promote_preceding_concepts_first() {

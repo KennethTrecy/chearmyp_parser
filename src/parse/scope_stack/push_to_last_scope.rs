@@ -1,4 +1,4 @@
-use crate::parse::Node;
+use crate::Node;
 use super::ScopeStack;
 
 impl<'a> ScopeStack<'a> {

@@ -1,5 +1,5 @@
 use alloc::vec::Vec;
-use crate::parse::Node;
+use crate::Node;
 
 /// Contains the fragments used for parsing.
 #[cfg_attr(test, derive(PartialEq))]

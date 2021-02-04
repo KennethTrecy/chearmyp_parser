@@ -1,5 +1,5 @@
 use crate::parse::scope_stack::Relationship;
-use crate::parse::Node;
+use crate::Node;
 use super::ScopeStack;
 
 impl<'a> ScopeStack<'a> {

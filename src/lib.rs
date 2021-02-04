@@ -5,8 +5,11 @@ mod lex {
 	pub use chearmyp_lexer::{Token, TokenQueue};
 }
 
-/// Contains all lexers.
-pub mod lex;
+/// Contains the types of abstract syntax trees.
+mod node;
 
-/// Contains all parsers and types of abstract syntax trees.
-pub mod parse;
+/// Contains the parser.
+mod parse;
+
+pub use node::Node;
+pub use parse::parse;

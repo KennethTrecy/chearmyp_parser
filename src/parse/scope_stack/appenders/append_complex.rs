@@ -49,7 +49,7 @@ mod t {
 		assert_eq!(scope_stack.scopes, expected_scopes);
 	}
 
-	use crate::parse::Node;
+	use crate::Node;
 
 	#[test]
 	pub fn can_promote_preceding_concepts_first() {

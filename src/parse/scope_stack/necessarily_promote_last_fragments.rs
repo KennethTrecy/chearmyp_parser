@@ -15,7 +15,7 @@ impl<'a> ScopeStack<'a> {
 #[cfg(test)]
 mod t {
 	use alloc::vec::Vec;
-	use crate::parse::Node;
+	use crate::Node;
 	use crate::parse::scope_stack::Relationship;
 	use super::ScopeStack;
 

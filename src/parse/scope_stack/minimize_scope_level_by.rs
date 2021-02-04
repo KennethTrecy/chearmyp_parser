@@ -33,7 +33,7 @@ mod t {
 		});
 	}
 
-	use crate::parse::Node;
+	use crate::Node;
 	use crate::parse::scope_stack::Fragment;
 
 	#[test]
