@@ -5,4 +5,4 @@ authors = ["Kenneth Trecy Tobias <33564322+KennethTrecy@users.noreply.github.com
 edition = "2018"
 
 [dependencies]
-chearmyp_lexer = { git = "http://chearmyp.local/chearmyp_lexer", tag = "v0.4.0" }
+chearmyp_lexer = { git = "http://chearmyp.local/chearmyp_lexer", tag = "v0.5.0" }
