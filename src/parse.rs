@@ -23,8 +23,8 @@ use scope_stack::ScopeStack;
 /// let nodes = parse(&source[..]);
 /// assert_eq!(nodes, vec![
 /// 	Node::LineComment(b" A sample source"),
-/// 	Node::Complex(b"hello", Vec::new(), vec![
-/// 		Node::Complex(b"world", vec![Node::Attacher(b"to", b"everyone")], Vec::new())
+/// 	Node::Complex(b"hello", vec![Node::Attacher(b"to", b"everyone")], vec![
+/// 		Node::Complex(b"world", Vec::new(), Vec::new())
 /// 	]),
 /// 	Node::Simplex(b"hi universe", Vec::new())
 /// ])

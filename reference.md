@@ -34,7 +34,7 @@ These are pair of concepts attached to a *simplex* or *complex*. There are two p
 
 Their attachment to *simplex* or *complex* can be expressed by one of the following:
 - If the *simplex* or *complex*, and *attacher*, are in one line, they must be separated by tabs.
-- Otherwise, they must be on the next line of the *simplex* and *complex* with same indention.
+- Otherwise, they must be on the next line of the *simplex* and *complex* with indented by one tab.
 
 Attachers may also have other attachers separated by tabs. In addition, they may be duplicated even
 if they have the same label and/or same content.
