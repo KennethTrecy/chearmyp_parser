@@ -1,5 +1,5 @@
 # Chearmyp Syntax Reference
-These document contains specific details about the tokens' syntax in Chearmyp.
+These document contains specific details about the nodes' syntax in Chearmyp.
 
 ## Comment
 In general, comments must be denoted with a pound sign (`#`).

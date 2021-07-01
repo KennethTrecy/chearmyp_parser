@@ -3,9 +3,9 @@ This is an experimental, general purpose, human-readable, language. In this cont
 means that it can be used as a markup, programming, command, and more.
 
 ## Syntax Overview
-There are five general kinds of tokens that exist in Chearmyp. Take note that Chearmyp still
-have unstable syntax.
-1. *Comment*. These tokens may be used for documentation purposes. It has two subkinds: *line*
+There are five general kinds of nodes that exist in Chearmyp. Take note that Chearmyp still have
+unstable syntax.
+1. *Comment*. These nodes may be used for documentation purposes. It has two subkinds: *line*
 	comments and *block* comments.
 	- *Line* comment. These are comments that only exist in one line and have a pound sign (`#`)
 		prefix.
@@ -28,7 +28,7 @@ have unstable syntax.
 			###
 		```
 
-2. *Simplex*. These tokens can be thought of as basic concepts that other concepts can use or
+2. *Simplex*. These nodes can be thought of as basic concepts that other concepts can use or
 	include. For example, `letter`. Since these are simple, they cannot contain other concepts.
 	Simplexes must end using a vertical line (`|`). It means that the concept "ends" there.
 	```
@@ -38,9 +38,9 @@ have unstable syntax.
 	example city|	# And they may contain spaces too!
 	```
 
-3. *Complex*. These tokens are counterpart of *simplexes*. These are concepts that can contain other
+3. *Complex*. These nodes are counterpart of *simplexes*. These are concepts that can contain other
 	*simplexes* and *complexes*. For example `word`, it can contain the `letter|`. To express the
-	containment of other tokens, those tokens must be indented using a tab.
+	containment of other nodes, those nodes must be indented using a tab.
 	```
 	# `word`, `punctuation`, and `binary` are examples of complex
 	word
@@ -60,31 +60,33 @@ have unstable syntax.
 		1|
 	```
 
-4. *Attacher*. These tokens are pair of concepts attached to a *simplex* or *complex*. These
+4. *Attacher*. These nodes are pair of concepts attached to a *simplex* or *complex*. These
 	concepts may be a metadata, adjective, reference, and others. They are written below or right
-	side of the *simplex* or *complex* they are attaching to. *Attachers* must have a colon (`:`) and followed tab(s) or spaces(s) between the pairs namely label and content.
+	side of the *simplex* or *complex* they are attaching to. *Attachers* must have a colon (`:`) and
+	followed tab(s) or spaces(s) between the pairs namely label and content.
 	```
 	books
 		book_a|
-		price: $1					# Attaches book a's price.
+		price: $1			# Attaches book a's price.
 		title: Title A		# Attaches book a's title.
 		author: Author A	# Attaches book a's author.
 
 		book_b|
-		price:	$2				# Attaches book b's price.
-		title:	Title B		# Attaches book b's title.
+		price:	$2			# Attaches book b's price.
+		title:	Title B	# Attaches book b's title.
 		author:	Author B	# Attaches book b's author.
 
 		# Attachers can be written in one line.
 		book_c|
-		price: $3	title: Title C	author: Author C
-	name: Book set A	# Attaches book set's name.
+			price: $3	title: Title C	author: Author C
+
+		name: Book set A	# Attaches book set's name.
 	```
 
-5. *Othertongue*. These tokens contain a different language from the rest of the document. Their
+5. *Othertongue*. These nodes contain a different language from the rest of the document. Their
 	syntax is similar to *comments*. Due to the variety of languages, there are concepts also, that
-	have no direct translation to the current concept. However, *othertongues* must be contained to
-	a *complex*.
+	have no direct translation to the current concept. However, *othertongues* must be contained to a
+	*complex*.
 	- *Line* othertongue. These othertoungues are similar to *line* comments. Their containment must
 		be expressed by indention using tab(s) or in one line after the *complex*.
 		```
