@@ -36,8 +36,7 @@ Their attachment to *simplex* or *complex* can be expressed by one of the follow
 - If the *simplex* or *complex*, and *attacher*, are in one line, they must be separated by tabs.
 - Otherwise, they must be on the next line of the *simplex* and *complex* with indented by one tab.
 
-Attachers may also have other attachers separated by tabs. In addition, they may be duplicated even
-if they have the same label and/or same content.
+Attachers may also have subsequent attachers separated by tabs. In addition, there should be no two attachers with the same label.
 
 ## Othertongue
 They are similar to comments but with additional features. They are denoted using equal sign (`=`).
