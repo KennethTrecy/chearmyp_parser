@@ -44,10 +44,9 @@ They are similar to comments but with additional features. They are denoted usin
 There must be a *complex* that contains them.
 
 ### Line Othertongue
-Prefix: space then, `=` then, space (if inlined); `=` then, space (if the contained)
+Prefix: `=` then, space
 Suffix: new line or end-of-file
-These must be within one line only just like the *line* comments. For some purposes, being inlined
-still means "contained" here unlike the *attachers*.
+These must be within one line only just like the *line* comments.
 
 ### Block Othertongue
 Prefix: zero to many tabs then, `===` then new line
