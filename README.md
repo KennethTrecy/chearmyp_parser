@@ -67,14 +67,14 @@ unstable syntax.
 	```
 	books
 		book_a|
-		price: $1			# Attaches book a's price.
-		title: Title A		# Attaches book a's title.
-		author: Author A	# Attaches book a's author.
+			price: $1			# Attaches book a's price.
+			title: Title A		# Attaches book a's title.
+			author: Author A	# Attaches book a's author.
 
 		book_b|
-		price:	$2			# Attaches book b's price.
-		title:	Title B	# Attaches book b's title.
-		author:	Author B	# Attaches book b's author.
+			price:	$2			# Attaches book b's price.
+			title:	Title B	# Attaches book b's title.
+			author:	Author B	# Attaches book b's author.
 
 		# Attachers can be written in one line.
 		book_c|
@@ -92,12 +92,13 @@ unstable syntax.
 		```
 		numbers
 			0|
-			= zero
+				= zero
 			1|
-			= one
-			= ...
+				= one
+				= ...
 
-		attacher = a pair of concepts that attach to other complex or simplex
+		attacher
+			= a pair of concepts that attach to other complex or simplex
 		```
 	- *Block* othertongue. These othertongues are similar to *block* comments. Instead of pound
 		signs, they are identified using three equal signs(`===`).
