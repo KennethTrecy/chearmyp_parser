@@ -47,20 +47,29 @@ use crate::ScopeStack;
 /// println!("{:?}", &tokens);
 ///
 /// type DefaultToken = Token<Range<usize>, Vec<Range<usize>>>;
+/// type AttacherToken = DefaultToken;
+/// type ScopeLevelToken = DefaultToken;
+/// type ComplexToken = DefaultToken;
+/// type SimplexToken = DefaultToken;
+/// type LineCommentToken = DefaultToken;
+/// type BlockCommentToken = DefaultToken;
+/// type LineOthertongueToken = DefaultToken;
+/// type BlockOthertongueToken = DefaultToken;
+///
 /// let nodes = parse::<
 /// 	_, _, _, _, _, _, _,
 /// 	VecDeque<Node<
 /// 		Range<usize>,
 /// 		Vec<Range<usize>>
 /// 	>>,
-/// 	DefaultToken,
-/// 	DefaultToken,
-/// 	DefaultToken,
-/// 	DefaultToken,
-/// 	DefaultToken,
-/// 	DefaultToken,
-/// 	DefaultToken,
-/// 	DefaultToken
+/// 	AttacherToken,
+/// 	ScopeLevelToken,
+/// 	ComplexToken,
+/// 	SimplexToken,
+/// 	LineCommentToken,
+/// 	BlockCommentToken,
+/// 	LineOthertongueToken,
+/// 	BlockOthertongueToken
 /// >(tokens);
 /// assert_eq!(nodes, VecDeque::from(vec![
 /// 	Node::LineComment(2..18),
@@ -152,6 +161,14 @@ mod t {
 	use super::parse;
 
 	type DefaultToken = Token<Range<usize>, Vec<Range<usize>>>;
+	type AttacherToken = DefaultToken;
+	type ScopeLevelToken = DefaultToken;
+	type ComplexToken = DefaultToken;
+	type SimplexToken = DefaultToken;
+	type LineCommentToken = DefaultToken;
+	type BlockCommentToken = DefaultToken;
+	type LineOthertongueToken = DefaultToken;
+	type BlockOthertongueToken = DefaultToken;
 
 	#[test]
 	fn can_parse_short_stream() {
@@ -163,14 +180,14 @@ mod t {
 				Range<usize>,
 				Vec<Range<usize>>
 			>>,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken
+			AttacherToken,
+			ScopeLevelToken,
+			ComplexToken,
+			SimplexToken,
+			LineCommentToken,
+			BlockCommentToken,
+			LineOthertongueToken,
+			BlockOthertongueToken
 		>(sample_queue);
 		let mut expected_nodes = Vec::new();
 		expected_nodes.push(Node::Complex(0..1, VecDeque::new(), VecDeque::new()));
@@ -192,14 +209,14 @@ mod t {
 				Range<usize>,
 				Vec<Range<usize>>
 			>>,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken,
-			DefaultToken
+			AttacherToken,
+			ScopeLevelToken,
+			ComplexToken,
+			SimplexToken,
+			LineCommentToken,
+			BlockCommentToken,
+			LineOthertongueToken,
+			BlockOthertongueToken
 		>(sample_queue);
 
 		let mut expected_nodes = Vec::new();
