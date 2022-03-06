@@ -1,9 +1,25 @@
-mod scope_stack;
+use crate::abstracts::{
+	AbstractBoundary,
+	AbstractBoundaryCollection,
 
-use alloc::vec::Vec;
-use crate::Node;
-use crate::lex::{Token, TokenQueue};
-use scope_stack::ScopeStack;
+	AbstractToken,
+	AbstractTokenQueue,
+	AbstractComplexToken,
+	AbstractSimplexToken,
+	AbstractAttacherToken,
+	AbstractScopeLevelToken,
+	AbstractLineCommentToken,
+	AbstractBlockCommentToken,
+	AbstractLineOthertongueToken,
+	AbstractBlockOthertongueToken,
+
+	AbstractNode,
+	AbstractNodeQueue,
+	AbstractAttacherCollection,
+	AbstractAttacherNode
+};
+use crate::token_kind::TokenKind;
+use crate::ScopeStack;
 
 /// Returns a collection of nodes based from the source.
 ///
@@ -11,7 +27,13 @@ use scope_stack::ScopeStack;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp_parser::{parse, Node};
+/// use std::cmp::PartialEq;
+/// use std::ops::Range;
+/// use std::collections::VecDeque;
+/// use chearmyp_token::Token;
+/// use chearmyp_lexer::lex;
+/// use chearmyp_node::Node;
+/// use chearmyp_parser::parse;
 /// let source = b"
 /// ## A sample source
 /// hello
@@ -20,32 +42,97 @@ use scope_stack::ScopeStack;
 /// hi universe|
 /// ";
 ///
-/// let nodes = parse(&source[..]);
-/// assert_eq!(nodes, vec![
-/// 	Node::LineComment(b" A sample source"),
-/// 	Node::Complex(b"hello", vec![Node::Attacher(b"to", b"everyone")], vec![
-/// 		Node::Complex(b"world", Vec::new(), Vec::new())
-/// 	]),
-/// 	Node::Simplex(b"hi universe", Vec::new())
-/// ])
+/// let tokens = lex(&&source[..], VecDeque::new());
+///
+/// println!("{:?}", &tokens);
+///
+/// type DefaultToken = Token<Range<usize>, Vec<Range<usize>>>;
+/// let nodes = parse::<
+/// 	_, _, _, _, _, _, _,
+/// 	VecDeque<Node<
+/// 		Range<usize>,
+/// 		Vec<Range<usize>>
+/// 	>>,
+/// 	DefaultToken,
+/// 	DefaultToken,
+/// 	DefaultToken,
+/// 	DefaultToken,
+/// 	DefaultToken,
+/// 	DefaultToken,
+/// 	DefaultToken,
+/// 	DefaultToken
+/// >(tokens);
+/// assert_eq!(nodes, VecDeque::from(vec![
+/// 	Node::LineComment(2..18),
+/// 	Node::Complex(
+/// 		19..24,
+/// 		VecDeque::from(vec![Node::Attacher(33..35, 37..45, vec![0..0])]),
+/// 		VecDeque::from(vec![
+/// 			Node::Complex(26..31, VecDeque::new(), VecDeque::new())
+/// 		])
+/// 	),
+/// 	Node::Simplex(46..57, VecDeque::new())
+/// ]))
 /// ```
-pub fn parse<'a, T>(stream: T) -> Vec<Node<'a>>
-where T: 'a + Into<TokenQueue<'a>> {
-	let stream = stream.into();
-	let mut scope_stack = ScopeStack::new();
+pub fn parse<T, U, V, W, X, Y, Z, A, B, C, D, E, F, G, H, I>(mut tokens: W) -> A
+where
+	T: AbstractBoundary<usize>,
+	U: AbstractBoundaryCollection<usize, T>,
+	V: AbstractToken<usize, T, usize, T, U>,
+	W: AbstractTokenQueue<usize, T, usize, T, U, V>,
+	X: AbstractAttacherNode + From<Z>,
+	Y: AbstractAttacherCollection<T, X>,
+	Z: AbstractNode<usize, T, usize, T, U, T, X, Y, Z, A>,
+	A: AbstractNodeQueue<Z>,
+	B: AbstractAttacherToken<Label = T, Content = T> + From<V>,
+	C: AbstractScopeLevelToken + From<V>,
+	D: AbstractComplexToken<Complex = T> + From<V>,
+	E: AbstractSimplexToken<Simplex = T> + From<V>,
+	F: AbstractLineCommentToken<Line = T> + From<V>,
+	G: AbstractBlockCommentToken<Block = U> + From<V>,
+	H: AbstractLineOthertongueToken<Line = T> + From<V>,
+	I: AbstractBlockOthertongueToken<Block = U> + From<V> {
+	let mut scope_stack = ScopeStack::<T, U, X, Y, Z, A>::new();
 
-	for token in stream {
+	loop {
+		let token = tokens.shift_token();
+
 		match token {
-			Token::Complex(concept) => scope_stack.append_complex(concept),
-			Token::Attacher(label, content) => scope_stack.append_attacher(label, content),
-			Token::Simplex(concept) => scope_stack.append_simplex(concept),
-			Token::ScopeLevel(level) => scope_stack.minimize_scope_level_by(level),
-			Token::LineComment(comment) => scope_stack.append_line_comment(comment),
-			Token::BlockComment(comment_lines) => scope_stack.append_block_comment(comment_lines),
-			Token::LineOthertongue(othertongue) => scope_stack.append_line_othertongue(othertongue),
-			Token::BlockOthertongue(othertongue_lines) => {
-				scope_stack.append_block_othertongue(othertongue_lines);
-			}
+			Some(token) => match token.kind() {
+				TokenKind::Complex => {
+					let concept = D::from(token).consume();
+					scope_stack.append_complex(concept)
+				},
+				TokenKind::Attacher => {
+					let (label, content) = B::from(token).consume();
+					scope_stack.append_attacher(label, content)
+				},
+				TokenKind::Simplex => {
+					let concept = E::from(token).consume();
+					scope_stack.append_simplex(concept)
+				},
+				TokenKind::ScopeLevel => {
+					let level = C::from(token).level();
+					scope_stack.minimize_scope_level_by(level)
+				},
+				TokenKind::LineComment => {
+					let line = F::from(token).consume();
+					scope_stack.append_line_comment(line)
+				},
+				TokenKind::BlockComment => {
+					let block = G::from(token).consume();
+					scope_stack.append_block_comment(block)
+				},
+				TokenKind::LineOthertongue => {
+					let line = H::from(token).consume();
+					scope_stack.append_line_othertongue(line)
+				},
+				TokenKind::BlockOthertongue => {
+					let block = I::from(token).consume();
+					scope_stack.append_block_othertongue(block);
+				}
+			},
+			None => break
 		}
 	}
 
@@ -55,42 +142,70 @@ where T: 'a + Into<TokenQueue<'a>> {
 
 #[cfg(test)]
 mod t {
-	use alloc::collections::VecDeque;
-	use alloc::vec::Vec;
-	use super::{Node, Token, TokenQueue};
+	use crate::native::{Range, Vec, VecDeque};
+	use crate::token::Token;
+	use crate::node::Node;
 	use super::parse;
+
+	type DefaultToken = Token<Range<usize>, Vec<Range<usize>>>;
 
 	#[test]
 	fn can_parse_short_stream() {
-		let mut sample = VecDeque::new();
-		sample.push_back(Token::Complex(b"a"));
-		let sample = TokenQueue(sample);
-		let nodes = parse(sample);
+		let mut sample_queue = VecDeque::new();
+		sample_queue.push_back(Token::Complex(0..1));
+		let nodes = parse::<
+			_, _, _, _, _, _, _,
+			VecDeque<Node<
+				Range<usize>,
+				Vec<Range<usize>>
+			>>,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken
+		>(sample_queue);
 		let mut expected_nodes = Vec::new();
-		expected_nodes.push(Node::Complex(b"a", Vec::new(), Vec::new()));
+		expected_nodes.push(Node::Complex(0..1, VecDeque::new(), VecDeque::new()));
 		assert_eq!(nodes, expected_nodes)
 	}
 
 	#[test]
 	fn can_parse_long_stream() {
-		let mut sample = VecDeque::new();
-		sample.push_back(Token::Complex(b"b"));
-		sample.push_back(Token::ScopeLevel(1));
-		sample.push_back(Token::Complex(b"cd"));
-		sample.push_back(Token::Complex(b"ef"));
-		sample.push_back(Token::ScopeLevel(0));
-		sample.push_back(Token::Complex(b"g"));
-		let sample = TokenQueue(sample);
-		let nodes = parse(sample);
+		let mut sample_queue = VecDeque::new();
+		sample_queue.push_back(Token::Complex(1..2));
+		sample_queue.push_back(Token::ScopeLevel(1));
+		sample_queue.push_back(Token::Complex(2..4));
+		sample_queue.push_back(Token::Complex(4..6));
+		sample_queue.push_back(Token::ScopeLevel(0));
+		sample_queue.push_back(Token::Complex(6..7));
+		let nodes = parse::<
+			_, _, _, _, _, _, _,
+			VecDeque<Node<
+				Range<usize>,
+				Vec<Range<usize>>
+			>>,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken,
+			DefaultToken
+		>(sample_queue);
 
 		let mut expected_nodes = Vec::new();
-		expected_nodes.push(Node::Complex(b"b", Vec::new(), {
-			let mut content = Vec::new();
-			content.push(Node::Complex(b"cd", Vec::new(), Vec::new()));
-			content.push(Node::Complex(b"ef", Vec::new(), Vec::new()));
+		expected_nodes.push(Node::Complex(1..2, VecDeque::new(), {
+			let mut content = VecDeque::new();
+			content.push_back(Node::Complex(2..4, VecDeque::new(), VecDeque::new()));
+			content.push_back(Node::Complex(4..6, VecDeque::new(), VecDeque::new()));
 			content
 		}));
-		expected_nodes.push(Node::Complex(b"g", Vec::new(), Vec::new()));
+		expected_nodes.push(Node::Complex(6..7, VecDeque::new(), VecDeque::new()));
 
 		assert_eq!(nodes, expected_nodes)
 	}

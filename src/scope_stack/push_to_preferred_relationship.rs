@@ -1,26 +1,43 @@
-use crate::Node;
-use crate::parse::scope_stack::Relationship;
+use crate::abstracts::{
+	AbstractBoundary,
+	AbstractBoundaryCollection,
+	AbstractNode,
+	AbstractNodeQueue,
+	AbstractAttacherCollection,
+	AbstractAttacherNode
+};
+use crate::node_kind::NodeKind;
+use crate::scope_stack::Relationship;
 use super::ScopeStack;
 
-impl<'a> ScopeStack<'a> {
-	pub fn push_to_preferred_relationship(&mut self, node: Node<'a>) {
-		match node {
-			Node::Complex(_, _, _) | Node::Simplex(_, _) | Node::LineOthertongue(_)
-			| Node::BlockOthertongue(_) => {
+impl<T, U, V, W, X, Y> ScopeStack<T, U, V, W, X, Y>
+where
+	T: AbstractBoundary<usize>,
+	U: AbstractBoundaryCollection<usize, T>,
+	V: AbstractAttacherNode + From<X>,
+	W: AbstractAttacherCollection<T, V>,
+	X: AbstractNode<usize, T, usize, T, U, T, V, W, X, Y>,
+	Y: AbstractNodeQueue<X> {
+	pub fn push_to_preferred_relationship(&mut self, node: X) {
+		match node.kind() {
+			NodeKind::Complex
+			| NodeKind::Simplex
+			| NodeKind::LineOthertongue
+			| NodeKind::BlockOthertongue => {
 				self.push_to_last_scope(node);
 				self.last_relationship = Relationship::Contained;
 			},
-			Node::Attacher(_, _) => {
+			NodeKind::Attacher => {
 				let last_fragment = self.fragments.last_mut().unwrap();
-				last_fragment.attach(node);
+				last_fragment.attach(node.into());
 				self.last_relationship = Relationship::Attached;
 			},
-			Node::LineComment(_) | Node::BlockComment(_) => {
+			NodeKind::LineComment | NodeKind::BlockComment => {
 				match self.last_relationship {
 					Relationship::Contained => self.push_to_last_scope(node),
 					Relationship::Attached => {
 						let last_fragment = self.fragments.last_mut().unwrap();
-						last_fragment.attach(node);
+						last_fragment.attach(node.into());
 					}
 				}
 			}
@@ -30,21 +47,24 @@ impl<'a> ScopeStack<'a> {
 
 #[cfg(test)]
 mod t {
-	use alloc::vec::Vec;
-	use crate::parse::scope_stack::Fragment;
-	use super::{Node, Relationship, ScopeStack};
+	use crate::native::{Range, Vec, VecDeque};
+	use crate::node::Node;
+	use crate::scope_stack::Fragment;
+	use super::{Relationship, ScopeStack};
 
 	#[test]
 	fn can_push_as_contained_node() {
-		let concept = b"abcde";
-		let node = Node::Complex(&concept[..], Vec::new(), Vec::new());
+		let node = Node::<Range<usize>, Vec<Range<usize>>>::Complex(
+			0..5,
+			VecDeque::new(),
+			VecDeque::new());
 
 		let mut scope_stack = ScopeStack::new();
 
 		let expected_last_scope = {
-			let mut scope = Vec::new();
-			let node = Node::Complex(&concept[..], Vec::new(), Vec::new());
-			scope.push(node);
+			let mut scope = VecDeque::new();
+			let node = Node::Complex(0..5, VecDeque::new(), VecDeque::new());
+			scope.push_back(node);
 			scope
 		};
 		let expected_scopes = {
@@ -63,19 +83,22 @@ mod t {
 
 	#[test]
 	fn can_push_as_attached_node() {
-		let concept = b"fgh";
-		let label = b"ij";
-		let content = b"k";
-		let node = Node::Attacher(&label[..], &content[..]);
+		let concept = 0..3;
+		let label = 3..5;
+		let content = 5..6;
+		let node = Node::<Range<usize>, Vec<Range<usize>>>::Attacher(
+			label.clone(),
+			content.clone(),
+			Vec::new());
 
 		let mut scope_stack = ScopeStack::new();
-		let initial_fragment = Fragment::Simplex(&concept[..], Vec::new());
+		let initial_fragment = Fragment::new_simplex(concept.clone(), VecDeque::new());
 		scope_stack.fragments.push(initial_fragment);
 
-		let expected_fragment = Fragment::Simplex(&concept[..], {
-			let mut attached_nodes = Vec::new();
-			let attacher = Node::Attacher(&label[..], &content[..]);
-			attached_nodes.push(attacher);
+		let expected_fragment = Fragment::new_simplex(concept.clone(), {
+			let mut attached_nodes = VecDeque::new();
+			let attacher = Node::Attacher(label.clone(), content.clone(), Vec::new());
+			attached_nodes.push_back(attacher);
 			attached_nodes
 		});
 		let expected_fragments = {
@@ -91,22 +114,22 @@ mod t {
 		assert_eq!(scope_stack.fragments, expected_fragments);
 		assert_eq!(scope_stack.scopes, {
 			let mut scopes = Vec::with_capacity(1);
-			scopes.push(Vec::new());
+			scopes.push(VecDeque::new());
 			scopes
 		});
 	}
 
 	#[test]
 	fn can_push_comment_as_contained_node() {
-		let comment = b"lmno";
-		let node = Node::LineComment(&comment[..]);
+		let comment = 0..4;
+		let node = Node::<Range<usize>, Vec<Range<usize>>>::LineComment(comment.clone());
 
 		let mut scope_stack = ScopeStack::new();
 
 		let expected_last_scope = {
-			let mut scope = Vec::new();
-			let node = Node::LineComment(&comment[..]);
-			scope.push(node);
+			let mut scope = VecDeque::new();
+			let node = Node::<Range<usize>, Vec<Range<usize>>>::LineComment(comment.clone());
+			scope.push_back(node);
 			scope
 		};
 		let expected_scopes = {
@@ -125,19 +148,19 @@ mod t {
 
 	#[test]
 	fn can_push_comment_as_attached_node() {
-		let concept = b"pqr";
-		let comment = b"stu";
-		let node = Node::LineComment(&comment[..]);
+		let concept = 0..3;
+		let comment = 3..6;
+		let node = Node::<Range<usize>, Vec<Range<usize>>>::LineComment(comment.clone());
 
 		let mut scope_stack = ScopeStack::new();
-		let initial_fragment = Fragment::Simplex(&concept[..], Vec::new());
+		let initial_fragment = Fragment::new_simplex(concept.clone(), VecDeque::new());
 		scope_stack.fragments.push(initial_fragment);
 		scope_stack.last_relationship = Relationship::Attached;
 
-		let expected_fragment = Fragment::Simplex(&concept[..], {
-			let mut attached_nodes = Vec::new();
-			let line_comment = Node::LineComment(&comment[..]);
-			attached_nodes.push(line_comment);
+		let expected_fragment = Fragment::new_simplex(concept.clone(), {
+			let mut attached_nodes = VecDeque::new();
+			let line_comment = Node::LineComment(comment.clone());
+			attached_nodes.push_back(line_comment);
 			attached_nodes
 		});
 		let expected_fragments = {
@@ -153,7 +176,7 @@ mod t {
 		assert_eq!(scope_stack.fragments, expected_fragments);
 		assert_eq!(scope_stack.scopes, {
 			let mut scopes = Vec::with_capacity(1);
-			scopes.push(Vec::new());
+			scopes.push(VecDeque::new());
 			scopes
 		});
 	}
