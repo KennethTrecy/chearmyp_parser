@@ -38,7 +38,7 @@ use crate::ScopeStack;
 /// ## A sample source
 /// hello
 /// 	world
-/// 	to: everyone
+/// 		to: everyone
 /// hi universe|
 /// ";
 ///
@@ -66,12 +66,16 @@ use crate::ScopeStack;
 /// 	Node::LineComment(2..18),
 /// 	Node::Complex(
 /// 		19..24,
-/// 		VecDeque::from(vec![Node::Attacher(33..35, 37..45, vec![0..0])]),
+/// 		VecDeque::new(),
 /// 		VecDeque::from(vec![
-/// 			Node::Complex(26..31, VecDeque::new(), VecDeque::new())
+/// 			Node::Complex(
+/// 				26..31,
+/// 				VecDeque::from(vec![Node::Attacher(34..36, 38..46, vec![0..0])]),
+/// 				VecDeque::new()
+/// 			)
 /// 		])
 /// 	),
-/// 	Node::Simplex(46..57, VecDeque::new())
+/// 	Node::Simplex(47..58, VecDeque::new())
 /// ]))
 /// ```
 pub fn parse<T, U, V, W, X, Y, Z, A, B, C, D, E, F, G, H, I>(mut tokens: W) -> A
