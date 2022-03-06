@@ -6,3 +6,12 @@ edition = "2018"
 
 [dependencies]
 chearmyp_lexer = { git = "http://chearmyp.local/chearmyp_lexer", tag = "v0.5.0" }
+
+[features]
+default = []
+no_std = [
+	"abstract_chearmyp_source/no_std",
+	"abstract_chearmyp_boundary/no_std",
+	"abstract_chearmyp_token/no_std",
+	"abstract_chearmyp_node/no_std"
+]
