@@ -133,7 +133,7 @@ This repository contains a parser library for Chearmyp which represents the sour
 The lexer has been forked. Visit the repository of the lexer for more details.
 
 ### Author
-Coded by Kenneth Trecy Tobias.
+Chearmyp Parser was created by Kenneth Trecy Tobias.
 
 [`filled_bare_metal`]: https://github.com/KennethTrecy/feo_template/tree/filled_bare_metal
 [Feo Template]: https://github.com/KennethTrecy/feo_template
