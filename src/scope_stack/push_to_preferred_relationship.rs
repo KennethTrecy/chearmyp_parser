@@ -28,9 +28,13 @@ where
 				self.last_relationship = Relationship::Contained;
 			},
 			NodeKind::Attacher => {
-				let last_fragment = self.fragments.last_mut().unwrap();
-				last_fragment.attach(node.into());
-				self.last_relationship = Relationship::Attached;
+				if let Some(last_fragment) = self.fragments.last_mut() {
+					last_fragment.attach(node.into());
+					self.last_relationship = Relationship::Attached;
+				} else {
+					self.push_to_last_scope(node);
+					self.last_relationship = Relationship::Contained;
+				}
 			},
 			NodeKind::LineComment | NodeKind::BlockComment => {
 				match self.last_relationship {
@@ -82,14 +86,15 @@ mod t {
 	}
 
 	#[test]
-	fn can_push_as_attached_node() {
+	fn can_push_attacher_as_attached_node() {
 		let concept = 0..3;
 		let label = 3..5;
 		let content = 5..6;
 		let node = Node::<Range<usize>, Vec<Range<usize>>>::Attacher(
 			label.clone(),
 			content.clone(),
-			Vec::new());
+			Vec::new()
+		);
 
 		let mut scope_stack = ScopeStack::new();
 		let initial_fragment = Fragment::new_simplex(concept.clone(), VecDeque::new());
@@ -115,6 +120,36 @@ mod t {
 		assert_eq!(scope_stack.scopes, {
 			let mut scopes = Vec::with_capacity(1);
 			scopes.push(VecDeque::new());
+			scopes
+		});
+	}
+
+	#[test]
+	fn can_push_attacher_as_contained_node() {
+		let label = 3..5;
+		let content = 5..6;
+		let node = Node::<Range<usize>, Vec<Range<usize>>>::Attacher(
+			label.clone(),
+			content.clone(),
+			Vec::new()
+		);
+
+		let mut scope_stack = ScopeStack::new();
+
+		let expected_fragments = Vec::new();
+
+		scope_stack.push_to_preferred_relationship(node);
+
+		assert_eq!(scope_stack.level, 0);
+		assert_eq!(scope_stack.last_relationship, Relationship::Contained);
+		assert_eq!(scope_stack.fragments, expected_fragments);
+		assert_eq!(scope_stack.scopes, {
+			let mut scopes = Vec::with_capacity(1);
+			scopes.push(vec![ Node::<Range<usize>, Vec<Range<usize>>>::Attacher(
+				label.clone(),
+				content.clone(),
+				Vec::new()
+			) ]);
 			scopes
 		});
 	}
