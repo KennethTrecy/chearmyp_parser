@@ -14,8 +14,8 @@ where
 	T: AbstractBoundary<usize>,
 	U: AbstractBoundaryCollection<usize, T>,
 	V: AbstractAttacherNode + From<X>,
-	W: AbstractAttacherCollection<T, V>,
-	X: AbstractNode<usize, T, usize, T, U, T, V, W, X, Y>,
+	W: AbstractAttacherCollection<V>,
+	X: AbstractNode<usize, T, usize, T, U, V, W, X, Y>,
 	Y: AbstractNodeQueue<X> {
 	/// Appends a simplex fragment to the collection of fragments.
 	pub fn append_simplex(&mut self, concept: T) {

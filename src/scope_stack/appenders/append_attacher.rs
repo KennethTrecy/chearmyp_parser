@@ -13,8 +13,8 @@ where
 	T: AbstractBoundary<usize>,
 	U: AbstractBoundaryCollection<usize, T>,
 	V: AbstractAttacherNode + From<X>,
-	W: AbstractAttacherCollection<T, V>,
-	X: AbstractNode<usize, T, usize, T, U, T, V, W, X, Y>,
+	W: AbstractAttacherCollection<V>,
+	X: AbstractNode<usize, T, usize, T, U, V, W, X, Y>,
 	Y: AbstractNodeQueue<X> {
 	/// Appends an attacher to the collection of attached nodes in last fragment.
 	pub fn append_attacher(&mut self, label: T, content: T) {

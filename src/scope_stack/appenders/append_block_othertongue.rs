@@ -13,8 +13,8 @@ where
 	T: AbstractBoundary<usize>,
 	U: AbstractBoundaryCollection<usize, T>,
 	V: AbstractAttacherNode + From<X>,
-	W: AbstractAttacherCollection<T, V>,
-	X: AbstractNode<usize, T, usize, T, U, T, V, W, X, Y>,
+	W: AbstractAttacherCollection<V>,
+	X: AbstractNode<usize, T, usize, T, U, V, W, X, Y>,
 	Y: AbstractNodeQueue<X> {
 	/// Appends a block othertongue to the last scope.
 	pub fn append_block_othertongue(&mut self, othertongue_lines: U) {
