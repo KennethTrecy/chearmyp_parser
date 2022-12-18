@@ -18,7 +18,7 @@ tag = "v0.4.1"
 
 [dependencies.abstract_chearmyp_node]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_node"
-tag = "v0.2.1"
+tag = "v0.3.0"
 
 [dev-dependencies.abstract_chearmyp_boundary]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_boundary"
@@ -47,7 +47,7 @@ features = []
 
 [dev-dependencies.abstract_chearmyp_node]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_node"
-tag = "v0.2.1"
+tag = "v0.3.0"
 features = ["assertable_node_kind", "vecdeque_node_queue"]
 
 [dev-dependencies.chearmyp_node]
