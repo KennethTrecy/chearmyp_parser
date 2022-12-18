@@ -13,8 +13,8 @@ where
 	T: AbstractBoundary<usize>,
 	U: AbstractBoundaryCollection<usize, T>,
 	V: AbstractAttacherNode,
-	W: AbstractAttacherCollection<T, V>,
-	X: AbstractNode<usize, T, usize, T, U, T, V, W, X, Y>,
+	W: AbstractAttacherCollection<V>,
+	X: AbstractNode<usize, T, usize, T, U, V, W, X, Y>,
 	Y: AbstractNodeQueue<X> {
 	pub fn push_to_last_scope(&mut self, node: X) {
 		let last_scope = self.scopes.last_mut().unwrap();

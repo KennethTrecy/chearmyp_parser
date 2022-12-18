@@ -41,8 +41,8 @@ where
 	T: AbstractBoundary<usize>,
 	U: AbstractBoundaryCollection<usize, T>,
 	V: AbstractAttacherNode,
-	W: AbstractAttacherCollection<T, V>,
-	X: AbstractNode<usize, T, usize, T, U, T, V, W, X, Y>,
+	W: AbstractAttacherCollection<V>,
+	X: AbstractNode<usize, T, usize, T, U, V, W, X, Y>,
 	Y: AbstractNodeQueue<X> {
 	/// Creates a scope stack that serves as the memory for the main parser.
 	pub fn new() -> Self {

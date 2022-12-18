@@ -14,7 +14,7 @@ impl<T, U, V> Fragment<T, U, V>
 where
 	T: AbstractBoundary<usize>,
 	U: AbstractAttacherNode,
-	V: AbstractAttacherCollection<T, U> {
+	V: AbstractAttacherCollection<U> {
 	pub fn new_simplex(boundary: T, collection: V) -> Self {
 		Fragment::Simplex(boundary, collection, PhantomData)
 	}
