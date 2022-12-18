@@ -52,7 +52,7 @@ features = ["assertable_node_kind", "vecdeque_node_queue"]
 
 [dev-dependencies.chearmyp_node]
 git = "https://github.com/KennethTrecy/chearmyp_node"
-tag = "v0.7.0"
+tag = "v0.8.0"
 features = ["assertable_node"]
 
 [features]
