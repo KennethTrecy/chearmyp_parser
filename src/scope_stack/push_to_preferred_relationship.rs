@@ -51,6 +51,8 @@ where
 
 #[cfg(test)]
 mod t {
+	#[cfg(feature = "no_std")]
+	use alloc::vec;
 	use crate::native::{Range, Vec, VecDeque};
 	use crate::node::Node;
 	use crate::scope_stack::Fragment;
