@@ -14,6 +14,8 @@ means that it can be used as a markup, programming, command, and more.
 ## Origin
 Some parts of the repository was based from [`filled_bare_metal`] branch of [Feo Template].
 
+The mechanism of the parser was based on [Chearmyp reference].
+
 ## Parser
 This repository contains a parser library for Chearmyp which represents the source as syntax tree.
 
@@ -66,3 +68,4 @@ Chearmyp Parser was created by Kenneth Trecy Tobias.
 [pnpm]: https://pnpm.io/installation
 [Conventional Commits specification]: https://www.conventionalcommits.org/en/v1.0.0/
 [contributing guide]: ./CONTRIBUTING.md
+[Chearmyp reference]: https://github.com/KennethTrecy/chearmyp_reference
