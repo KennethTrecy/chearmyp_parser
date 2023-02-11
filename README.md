@@ -24,6 +24,27 @@ The lexer has been forked. Visit the [repository of the lexer] for more details.
 
 ## Usage
 
+### Installation
+Add it to the dependencies:
+```
+[dependencies.chearmyp_parser]
+git = "https://github.com/KennethTrecy/chearmyp_parser"
+tag = "v1.0.0"
+```
+
+You may also activate all the features:
+```
+[dependencies.chearmyp_parser]
+git = "https://github.com/KennethTrecy/chearmyp_parser"
+tag = "v1.0.0"
+features = ["no_std"]
+```
+
+You generate the documentation by the running following code below:
+```
+cargo doc --all-features --open
+```
+
 ### Initialization
 If you want to contribute, this repository should be initialized to adhere in [Conventional Commits specification] for organize
 commits and automated generation of change log.
