@@ -6,53 +6,53 @@ edition = "2021"
 
 [dependencies.abstract_chearmyp_boundary]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_boundary"
-tag = "v0.2.0"
+tag = "v1.0.0"
 
 [dependencies.abstract_chearmyp_source]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_source"
-tag = "v0.6.0"
+tag = "v1.0.0"
 
 [dependencies.abstract_chearmyp_token]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_token"
-tag = "v0.4.1"
+tag = "v1.0.0"
 
 [dependencies.abstract_chearmyp_node]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_node"
-tag = "v0.3.0"
+tag = "v1.0.0"
 
 [dev-dependencies.abstract_chearmyp_boundary]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_boundary"
-tag = "v0.2.0"
+tag = "v1.0.0"
 features = ["range_boundary", "vec_boundary_collection"]
 
 [dev-dependencies.abstract_chearmyp_source]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_source"
-tag = "v0.6.0"
+tag = "v1.0.0"
 features = ["slice_u8_source", "vec_source_collection", "slice_u8_comparable_to_str"]
 
 [dev-dependencies.abstract_chearmyp_token]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_token"
-tag = "v0.4.1"
+tag = "v1.0.0"
 features = ["assertable_token_kind", "vecdeque_token_queue"]
 
 [dev-dependencies.chearmyp_token]
 git = "https://github.com/KennethTrecy/chearmyp_token"
-tag = "v0.7.0"
+tag = "v1.0.0"
 features = ["assertable_token"]
 
 [dev-dependencies.chearmyp_lexer]
 git = "https://github.com/KennethTrecy/chearmyp_lexer"
-tag = "v0.7.0"
+tag = "v1.0.0"
 features = []
 
 [dev-dependencies.abstract_chearmyp_node]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_node"
-tag = "v0.3.0"
+tag = "v1.0.0"
 features = ["assertable_node_kind", "vecdeque_node_queue"]
 
 [dev-dependencies.chearmyp_node]
 git = "https://github.com/KennethTrecy/chearmyp_node"
-tag = "v0.8.0"
+tag = "v1.0.0"
 features = ["assertable_node"]
 
 [features]
